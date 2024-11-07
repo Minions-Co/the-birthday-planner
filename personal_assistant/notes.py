@@ -7,3 +7,7 @@ class Note:
         self.title = title
         self.content = content
         self.tags = tags if tags else []
+        
+class NoteBook:
+    def __init__(self):
+        self.notes = {}
