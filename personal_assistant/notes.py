@@ -6,7 +6,23 @@ class Note:
         self.title = title
         self.content = content
         self.tags = tags if tags else []
+    
+    def to_dict(self):
+        return {
+            'title': self.title,
+            'content': self.content,
+            'tags': self.tags,
+        }
+    
+    @staticmethod
+    def from_dict(data):
+        return Note(
+            title=data['title'],
+            content=data['content'],
+            tags=data.get('tags', []),
+        )
         
+           
 class NoteBook:
     def __init__(self):
         self.storage = Storage('notes.json')
@@ -22,8 +38,7 @@ class NoteBook:
     
     def add_note(self, note): # Функція додавання запису в примітки
         self.notes[note.title] = note
-    
-    
+       
     def search_notes(self, query): # Функція пошуку
         results = []
         for note in self.notes.values():
