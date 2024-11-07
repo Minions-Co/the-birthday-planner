@@ -1,3 +1,6 @@
+from personal_assistant.storage import Storage
+
+
 class Note:
     def __init__(self, title, content, tags=None):
         self.title = title
@@ -6,10 +9,20 @@ class Note:
         
 class NoteBook:
     def __init__(self):
-        self.notes = {}
+        self.storage = Storage('notes.json')
+        self.notes = self.load_notes()
+    
+    def load_notes(self):
+        data = self.storage.load_data()
+        return {title: Note.from_dict(info) for title, info in data.items()}
+    
+    def save_notes(self):
+        data = {title: note.to_dict() for title, note in self.notes.items()}
+        self.storage.save_data(data)
     
     def add_note(self, note): # Функція додавання запису в примітки
         self.notes[note.title] = note
+    
     
     def search_notes(self, query): # Функція пошуку
         results = []
@@ -24,3 +37,5 @@ class NoteBook:
             if set(tags).issubset(set(note.tags)):
                 results.append(note)
         return results
+    
+    
