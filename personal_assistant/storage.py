@@ -1,8 +1,10 @@
+import os
 import json
 
 class Storage:
     def __init__(self, filename):
-        self.filename = filename
+        self.filepath = os.path.join(os.path.expanduser('~'), 'personal_assistant_data', filename)
+        os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
 
     def load_data(self):
         try:
