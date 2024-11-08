@@ -1,43 +1,46 @@
-class Contact:
-    class InvalidEmailError(Exception):
-    pass
-
-
-class Contact:
-    import re
-
+# Повна реалізація класу Contact з усіма методами та коректною валідацією.
 
 class InvalidPhoneError(Exception):
     pass
 
 
-class Contact:
-    def __init__(self, name, phone='', email=''):
-        self.name = name
-        self.phone = phone
-        self.email = email
+class InvalidEmailError(Exception):
+    pass
 
-    def validate_phone(self):
+
+class Contact:
+    def __init__(self, name, address='', phones=None, email='', birthday=None):
+        self.name = name
+        self.address = address
+        self.phones = phones if phones else []
+        self.email = email
+        self.birthday = birthday
+
+    def validate_phone(self, phone):
         pattern = r'^\+?\d{9,15}$'
-        if not re.match(pattern, self.phone):
-            raise InvalidPhoneError("Invalid phone number.")
+        if not re.match(pattern, phone):
+            raise InvalidPhoneError(f"Invalid phone number: {phone}")
 
     def validate_email(self):
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, self.email):
-            raise InvalidEmailError("Invalid email address.")
+            raise InvalidEmailError(f"Invalid email address: {self.email}")
 
     def to_dict(self):
         return {
             'name': self.name,
-            'phone': self.phone,
+            'address': self.address,
+            'phones': self.phones,
             'email': self.email,
+            'birthday': self.birthday,
         }
 
     @staticmethod
     def from_dict(data):
         return Contact(
             name=data['name'],
-            phone=data.get('phone', ''),
+            address=data.get('address', ''),
+            phones=data.get('phones', []),
             email=data.get('email', ''),
+            birthday=data.get('birthday', None),
         )
