@@ -1,23 +1,15 @@
+from personal_assistant.storage import Storage
+
 class ContactBook:
     def __init__(self):
-        self.contacts = {}
+        self.storage = Storage('contacts.json')
+        self.contacts = self.load_contacts()
 
-    def add_contact(self, contact):
-        self.contacts[contact.name] = contact
+    def load_contacts(self):
+        data = self.storage.load_data()
+        return {name: Contact.from_dict(info) for name, info in data.items()}
 
-    def search_contacts(self, query):
-        results = []
-        for contact in self.contacts.values():
-            if query.lower() in contact.name.lower():
-                results.append(contact)
-        return results
-
-    def delete_contact(self, name):
-        if name in self.contacts:
-            del self.contacts[name]
-
-    def edit_contact(self, name, field, value):
-        if name in self.contacts:
-            contact = self.contacts[name]
-            setattr(contact, field, value)
-            
+    def save_contacts(self):
+        data = {name: contact.to_dict() for name, contact in self.contacts.items()}
+        self.storage.save_data(data)
+        
