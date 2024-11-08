@@ -63,5 +63,14 @@ class NoteBook:
         else:
             print(f"Нотатку '{title}' не знайдено.")
 
-
-    
+    def edit_note(self, title, content=None, tags=None): # Функція редагування примітки
+        if title in self.notes:
+            note = self.notes[title]
+            if content:
+                note.content = content
+            if tags is not None:
+                note.tags = tags
+            self.save_notes()
+            print(f"Нотатку '{title}' оновлено.")
+        else:
+            print(f"Нотатку '{title}' не знайдено.")
