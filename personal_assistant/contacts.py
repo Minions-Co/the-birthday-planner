@@ -1,4 +1,5 @@
-class InvalidEmailError(Exception):
+class Contact:
+    class InvalidEmailError(Exception):
     pass
 
 
@@ -25,3 +26,18 @@ class Contact:
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, self.email):
             raise InvalidEmailError("Invalid email address.")
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'phone': self.phone,
+            'email': self.email,
+        }
+
+    @staticmethod
+    def from_dict(data):
+        return Contact(
+            name=data['name'],
+            phone=data.get('phone', ''),
+            email=data.get('email', ''),
+        )
