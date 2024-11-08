@@ -26,16 +26,42 @@ class ContactBook:
                 results.append(contact)
         return results
 
+    def get_upcoming_birthdays(self, days):
+        upcoming = []
+        for contact in self.contacts.values():
+            days_to_bday = contact.days_to_birthday()
+            if days_to_bday is not None and days_to_bday <= days:
+                upcoming.append(contact)
+        return upcoming
+
     def delete_contact(self, name):
         if name in self.contacts:
             del self.contacts[name]
             self.save_contacts()
             print(f"Контакт '{name}' видалено.")
+        else:
+            print(f"Контакт '{name}' не знайдено.")
 
     def edit_contact(self, name, field, value):
         if name in self.contacts:
             contact = self.contacts[name]
-            setattr(contact, field, value)
+            if field == 'address':
+                contact.address = value
+            elif field == 'email':
+                contact.email = value
+                contact.validate_email()
+            elif field == 'birthday':
+                contact.birthday = value
+            elif field == 'phones':
+                phones = value.split(',')
+                for phone in phones:
+                    contact.validate_phone(phone.strip())
+                contact.phones = [phone.strip() for phone in phones]
+            else:
+                print(f"Невідоме поле '{field}'.")
+                return
             self.save_contacts()
             print(f"Контакт '{name}' оновлено.")
+        else:
+            print(f"Контакт '{name}' не знайдено.")
             
