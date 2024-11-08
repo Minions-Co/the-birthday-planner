@@ -1,8 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='personal_assistant',
+    name='birthday_planner',
+    description='The Ultimate Birthday Planner!',
     version='0.1.0',
+    author='Minions Co.',
+    author_email='dev@minions.co',
     packages=find_packages(),
     entry_points={
         'console_scripts': [
@@ -12,7 +15,5 @@ setup(
     install_requires=[
         'python-dateutil',
     ],
-    description='The Ultimate Birthday Planner!',
-    author='Minions Co.',
-    author_email='dev@minions.co',
+    python_requires='>=3.10',
 )
