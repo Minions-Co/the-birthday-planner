@@ -1,5 +1,3 @@
-# Повна реалізація класу Contact з усіма методами та коректною валідацією.
-
 class InvalidPhoneError(Exception):
     pass
 
