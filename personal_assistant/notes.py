@@ -28,17 +28,19 @@ class NoteBook:
         self.storage = Storage('notes.json')
         self.notes = self.load_notes()
     
-    def load_notes(self):
+    def load_notes(self): # Функція для ззавантаження приміток з файлу
         data = self.storage.load_data()
         return {title: Note.from_dict(info) for title, info in data.items()}
     
-    def save_notes(self):
+    def save_notes(self): # Функція для зберігання приміток з файлу
         data = {title: note.to_dict() for title, note in self.notes.items()}
         self.storage.save_data(data)
     
     def add_note(self, note): # Функція додавання запису в примітки
         self.notes[note.title] = note
-       
+        self.save_notes()
+        print(f"Нотатку '{note.title}' додано.")
+        
     def search_notes(self, query): # Функція пошуку
         results = []
         for note in self.notes.values():
@@ -53,4 +55,13 @@ class NoteBook:
                 results.append(note)
         return results
     
+    def delete_note(self, title): # Функція видалення примітки
+        if title in self.notes:
+            del self.notes[title]
+            self.save_notes()
+            print(f"Нотатку '{title}' видалено.")
+        else:
+            print(f"Нотатку '{title}' не знайдено.")
+
+
     
