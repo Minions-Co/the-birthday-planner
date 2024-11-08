@@ -1,3 +1,8 @@
+import re
+from datetime import datetime
+from dateutil.parser import parse as parse_date
+
+
 class InvalidPhoneError(Exception):
     pass
 
@@ -23,6 +28,16 @@ class Contact:
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         if not re.match(pattern, self.email):
             raise InvalidEmailError(f"Invalid email address: {self.email}")
+
+    def days_to_birthday(self):
+        if self.birthday:
+            today = datetime.today()
+            bday = datetime.strptime(self.birthday, '%Y-%m-%d')
+            next_birthday = bday.replace(year=today.year)
+            if next_birthday < today:
+                next_birthday = next_birthday.replace(year=today.year + 1)
+            return (next_birthday - today).days
+        return None
 
     def to_dict(self):
         return {
