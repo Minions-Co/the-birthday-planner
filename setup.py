@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'assistant=personal_assistant.main:main',
+            'birthday-planner=personal_assistant.main:main',
         ],
     },
     install_requires=[
