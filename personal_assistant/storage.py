@@ -1,21 +1,16 @@
-import os
 import json
+import os
 
 class Storage:
     def __init__(self, filename):
-        self.filepath = os.path.join(os.path.expanduser('~'), 'personal_assistant_data', filename)
-        os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
+        self.filepath = os.path.join(os.path.expanduser('~'), filename)
 
     def load_data(self):
-        try:
-            with open(self.filename, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except FileNotFoundError:
+        if not os.path.exists(self.filepath):
             return {}
+        with open(self.filepath, 'r') as f:
+            return json.load(f)
 
     def save_data(self, data):
-        with open(self.filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
-
-       
-            
+        with open(self.filepath, 'w') as f:
+            json.dump(data, f)
